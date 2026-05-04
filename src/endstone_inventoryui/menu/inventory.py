@@ -1,6 +1,6 @@
 from typing import overload, Callable
 
-from endstone._internal.endstone_python import ItemStack
+from endstone.inventory import ItemStack
 
 from endstone_inventoryui.util.item_utils import clone_item
 

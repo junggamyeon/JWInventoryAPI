@@ -1,8 +1,7 @@
 from bedrock_protocol.packets import MinecraftPacketIds
 from bedrock_protocol.packets.enums import ItemStackRequestActionType
 from bedrock_protocol.packets.packet import ContainerClosePacket, ItemRegistryPacket, ItemStackRequestPacket
-from endstone._internal.endstone_python import PacketSendEvent
-from endstone.event import event_handler, EventPriority, PlayerQuitEvent, PacketReceiveEvent
+from endstone.event import event_handler, EventPriority, PlayerQuitEvent, PacketReceiveEvent, PacketSendEvent
 from endstone.plugin import Plugin
 
 from .manager import Session
