@@ -1,7 +1,6 @@
 from bedrock_protocol.packets.types import ItemData
 from bstream import BinaryStream
-from endstone._internal.endstone_python import ItemStack
-
+from endstone.inventory import ItemStack
 from endstone_inventoryui.util.item_utils import build_tag
 from endstone_inventoryui.util.item_utils import is_air
 

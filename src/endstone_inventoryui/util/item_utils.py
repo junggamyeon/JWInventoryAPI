@@ -1,7 +1,7 @@
 from ctypes import c_int16
 
 from bedrock_protocol.packets.types import ItemData
-from endstone._internal.endstone_python import ItemStack, ItemMeta
+from endstone.inventory import ItemStack, ItemMeta
 from rapidnbt import CompoundTag, ListTag
 
 enchant_map = {

@@ -1,6 +1,6 @@
 from typing import overload, Callable
 
-from endstone._internal.endstone_python import ItemStack
+from endstone.inventory import ItemStack
 
 from endstone_inventoryui.util.item_utils import clone_item
 
@@ -71,8 +71,10 @@ class UIInventory:
                                   min(self._max_stack_size, slot_item.max_stack_size) - slot_item.amount)
                     if max_add > 0:
                         slot_item.amount += max_add
-                        remaining.amount -= max_add
                         self._notify_slot_update(slot_idx)
+                        if remaining.amount == max_add:
+                            break
+                        remaining.amount -= max_add
 
             for slot_idx in range(self._size):
                 if remaining.amount <= 0:
@@ -83,6 +85,8 @@ class UIInventory:
                     new_item = clone_item(remaining)
                     new_item.amount = max_add
                     self._slots[slot_idx] = new_item
+                    if remaining.amount == max_add:
+                        break
                     remaining.amount -= max_add
                     self._notify_slot_update(slot_idx)
             if remaining.amount > 0:

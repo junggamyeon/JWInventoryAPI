@@ -1,5 +1,5 @@
 from endstone import Player
-from endstone._internal.endstone_python import ItemStack
+from endstone.inventory import ItemStack
 from endstone.command import CommandSender, Command
 from endstone.plugin import Plugin
 

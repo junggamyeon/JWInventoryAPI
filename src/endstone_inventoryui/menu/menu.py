@@ -1,8 +1,7 @@
 from typing import Optional, Callable, TYPE_CHECKING
 
 from endstone import Player
-from endstone._internal.endstone_python import ItemStack
-
+from endstone.inventory import ItemStack
 from endstone_inventoryui.manager.player_manager import find_session, create_session
 from endstone_inventoryui.menu.inventory import UIInventory
 from endstone_inventoryui.menu.menu_type import MenuType
