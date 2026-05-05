@@ -1,5 +1,5 @@
 from bedrock_protocol.packets.packet import BlockActorDataPacket, ContainerOpenPacket
-from bedrock_protocol.packets.types import BlockPos, NetworkBlockPosition
+from bedrock_protocol.packets.types import BlockPos
 from endstone import Player
 from rapidnbt import CompoundTag
 
@@ -24,12 +24,12 @@ class BlockGraphic(Graphic):
         pos = self.pos
         tag.set("id", self.menu.type.block_actor_id)
         tag.set("CustomName", self.menu.name)
-        pk = BlockActorDataPacket(NetworkBlockPosition(pos.x, pos.y, pos.z), tag)
+        pk = BlockActorDataPacket(BlockPos(pos.x, pos.y, pos.z), tag)
         player.send_packet(pk.get_packet_id(), pk.serialize())
 
     def open(self, player: Player):
         from endstone_inventoryui.manager import Session
-        pos = NetworkBlockPosition(self.pos.x, self.pos.y, self.pos.z)
+        pos = BlockPos(self.pos.x, self.pos.y, self.pos.z)
         pk = ContainerOpenPacket(Session.CONTAINER_ID, self.menu.type.container_type, pos)
         player.send_packet(pk.get_packet_id(), pk.serialize())
 

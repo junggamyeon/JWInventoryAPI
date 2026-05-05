@@ -2,7 +2,7 @@ import math
 import random
 
 from bedrock_protocol.packets.packet import UpdateBlockPacket
-from bedrock_protocol.packets.types import BlockPos, NetworkBlockPosition
+from bedrock_protocol.packets.types import BlockPos
 from endstone import Player, Server
 
 from endstone_inventoryui.network.network_stack_latency_packet import NetworkStackLatencyPacket
@@ -25,7 +25,7 @@ def send_ack_packet(player: Player) -> int:
 
 def send_block(player: Player, name: str, pos: BlockPos):
     block_data = player.server.create_block_data(name)
-    pk = UpdateBlockPacket(NetworkBlockPosition(pos.x, pos.y, pos.z), block_data.runtime_id, 0b0010, 0)
+    pk = UpdateBlockPacket(BlockPos(pos.x, pos.y, pos.z), block_data.runtime_id, 0b0010, 0)
     player.send_packet(pk.get_packet_id(), pk.serialize())
 
 
