@@ -84,11 +84,18 @@ class EventListener:
                             slot = action.action_data.source.slot
                             source_id = action.action_data.source.container.container_enum
                             if source_id != 7:  # LEVEL_ENTITY
-                                return
-                            if menu._listener is not None:
-                                item_clicked = menu.inventory.get_item(slot)
-                                menu._listener(player, slot, item_clicked, menu.inventory)
-                                return
+                                if menu._place_listener is not None:
+                                    item_from_player = player.inventory.get_item(slot)
+                                    menu._place_listener(player, slot, item_from_player, menu.inventory)
+                            else:
+                                if menu._listener is not None:
+                                    item_clicked = menu.inventory.get_item(slot)
+                                    menu._listener(player, slot, item_clicked, menu.inventory)
+                            # Cancel event to prevent vanilla server from processing the Take/Place
+                            event.is_cancelled = True
+                            # Resend full container contents so the client resyncs
+                            session.send_contents()
+                            return
 
     @event_handler
     def on_packet_send(self, event: PacketSendEvent):
