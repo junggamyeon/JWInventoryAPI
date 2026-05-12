@@ -18,6 +18,7 @@ class Menu:
         self._inventory: UIInventory = UIInventory(type.container_size,
                                                    slot_updated=self._on_slot_changed)
         self._listener: Optional[Callable[[Player, int, ItemStack, UIInventory], None]] = None
+        self._place_listener: Optional[Callable[[Player, int, ItemStack, UIInventory], None]] = None
         self._open_listener: Optional[Callable[[Player], None]] = None
         self._close_listener: Optional[Callable[[Player], None]] = None
         self._sessions: set['Session'] = set()
@@ -45,6 +46,13 @@ class Menu:
 
     def set_listener(self, listener: Callable[[Player, int, ItemStack, UIInventory], None]):
         self._listener = listener
+
+    def set_place_listener(self, listener: Callable[[Player, int, ItemStack, UIInventory], None]):
+        """
+        Set the callback for when a player clicks an item from their own inventory
+        while this menu is open.
+        """
+        self._place_listener = listener
 
     def set_open_listener(self, listener: Callable[[Player], None]):
         """
