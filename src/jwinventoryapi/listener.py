@@ -88,9 +88,8 @@ class EventListener:
                                     item_from_player = player.inventory.get_item(slot)
                                     menu._place_listener(player, slot, item_from_player, menu.inventory)
                             else:
-                                if menu._listener is not None:
-                                    item_clicked = menu.inventory.get_item(slot)
-                                    menu._listener(player, slot, item_clicked, menu.inventory)
+                                item_clicked = menu.inventory.get_item(slot)
+                                menu._handle_click(player, slot, item_clicked)
                             # Cancel event to prevent vanilla server from processing the Take/Place
                             event.is_cancelled = True
                             # Resend full container contents so the client resyncs

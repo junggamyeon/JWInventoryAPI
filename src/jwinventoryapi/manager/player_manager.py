@@ -4,7 +4,7 @@ from uuid import UUID
 from endstone import Player
 
 if TYPE_CHECKING:
-    from endstone_inventoryui.manager import Session
+    from jwinventoryapi.manager import Session
 
 sessions: dict[UUID, 'Session'] = {}
 
@@ -17,7 +17,7 @@ def find_session(player: Player) -> 'Session|None':
 
 
 def create_session(player: Player) -> 'Session':
-    from endstone_inventoryui.manager import Session  # Import here at runtime
+    from jwinventoryapi.manager import Session  # Import here at runtime
 
     global sessions
     session = Session(player=player)

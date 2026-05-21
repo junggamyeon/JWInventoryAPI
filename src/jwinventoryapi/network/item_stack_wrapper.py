@@ -1,8 +1,8 @@
 from bedrock_protocol.packets.types import ItemData
 from bstream import BinaryStream
 from endstone.inventory import ItemStack
-from endstone_inventoryui.util.item_utils import build_tag
-from endstone_inventoryui.util.item_utils import is_air
+from jwinventoryapi.util.item_utils import build_tag
+from jwinventoryapi.util.item_utils import is_air
 
 
 class ItemStackWrapper:
@@ -11,7 +11,7 @@ class ItemStackWrapper:
     data: ItemData
 
     def __init__(self, stack_id: int = 0, item_stack: ItemStack | None = None):
-        from endstone_inventoryui.util.item_utils import get_item_data
+        from jwinventoryapi.util.item_utils import get_item_data
         self.stack_id: int = stack_id
         self.item_stack: ItemStack = item_stack or ItemStack("minecraft:air")
         data = get_item_data(self.item_stack.type.id)

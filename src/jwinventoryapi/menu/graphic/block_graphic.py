@@ -3,9 +3,9 @@ from bedrock_protocol.packets.types import BlockPos
 from endstone import Player
 from rapidnbt import CompoundTag
 
-from endstone_inventoryui.menu import Menu
-from endstone_inventoryui.menu.graphic.graphic import Graphic
-from endstone_inventoryui.util.utils import send_block
+from jwinventoryapi.menu import Menu
+from jwinventoryapi.menu.graphic.graphic import Graphic
+from jwinventoryapi.util.utils import send_block
 
 
 class BlockGraphic(Graphic):
@@ -28,7 +28,7 @@ class BlockGraphic(Graphic):
         player.send_packet(pk.get_packet_id(), pk.serialize())
 
     def open(self, player: Player):
-        from endstone_inventoryui.manager import Session
+        from jwinventoryapi.manager import Session
         pos = BlockPos(self.pos.x, self.pos.y, self.pos.z)
         pk = ContainerOpenPacket(Session.CONTAINER_ID, self.menu.type.container_type, pos)
         player.send_packet(pk.get_packet_id(), pk.serialize())

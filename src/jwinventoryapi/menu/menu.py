@@ -2,12 +2,12 @@ from typing import Optional, Callable, TYPE_CHECKING
 
 from endstone import Player
 from endstone.inventory import ItemStack
-from endstone_inventoryui.manager.player_manager import find_session, create_session
-from endstone_inventoryui.menu.inventory import UIInventory
-from endstone_inventoryui.menu.menu_type import MenuType
+from jwinventoryapi.manager.player_manager import find_session, create_session
+from jwinventoryapi.menu.inventory import UIInventory
+from jwinventoryapi.menu.menu_type import MenuType
 
 if TYPE_CHECKING:
-    from endstone_inventoryui.manager import Session
+    from jwinventoryapi.manager import Session
 
 
 class Menu:
@@ -22,6 +22,7 @@ class Menu:
         self._open_listener: Optional[Callable[[Player], None]] = None
         self._close_listener: Optional[Callable[[Player], None]] = None
         self._sessions: set['Session'] = set()
+        self._slot_listeners: dict[int, Callable[[Player, int, ItemStack, UIInventory], None]] = {}
 
     @property
     def inventory(self):
@@ -43,6 +44,32 @@ class Menu:
             name: The new display name to show at the top of the menu.
         """
         self._name = name
+
+    def set_item(self, slot: int, item: ItemStack, on_click: Optional[Callable[[Player, int, ItemStack, UIInventory], None]] = None) -> 'Menu':
+        """
+        Set an item in the menu and optionally register a click listener for it.
+        """
+        self._inventory.set_item(slot, item)
+        if on_click is not None:
+            self._slot_listeners[slot] = on_click
+        else:
+            self._slot_listeners.pop(slot, None)
+        return self
+
+    def add_item(self, item: ItemStack, on_click: Optional[Callable[[Player, int, ItemStack, UIInventory], None]] = None) -> 'Menu':
+        """
+        Add an item to the first empty slot and optionally register a click listener for it.
+        """
+        slot = self._inventory.first_empty
+        if slot != -1:
+            self.set_item(slot, item, on_click)
+        return self
+
+    def _handle_click(self, player: Player, slot: int, item: ItemStack) -> None:
+        if slot in self._slot_listeners:
+            self._slot_listeners[slot](player, slot, item, self._inventory)
+        if self._listener is not None:
+            self._listener(player, slot, item, self._inventory)
 
     def set_listener(self, listener: Callable[[Player, int, ItemStack, UIInventory], None]):
         self._listener = listener
@@ -99,7 +126,7 @@ class Menu:
         Only closes the menu if it matches the player's currently open menu
         and the session is not already in a closing state.
         """
-        from endstone_inventoryui.manager import Session
+        from jwinventoryapi.manager import Session
         session = find_session(player)
         if session is not None:
             if session.menu == self and session.state != Session.State.CLOSING:
@@ -111,7 +138,7 @@ class Menu:
         """
         Close this menu for all players currently viewing it.
         """
-        from endstone_inventoryui.manager import Session
+        from jwinventoryapi.manager import Session
         for s in self._sessions:
             if s.state != Session.State.CLOSING:
                 s.close()
@@ -120,7 +147,7 @@ class Menu:
         """
         Get a list of players who currently have this menu open.
         """
-        from endstone_inventoryui.manager import Session
+        from jwinventoryapi.manager import Session
         players = []
         for s in self._sessions:
             if s.state == Session.State.OPEN:
@@ -128,7 +155,7 @@ class Menu:
         return players
 
     def _on_slot_changed(self, slot: int) -> None:
-        from endstone_inventoryui.manager import Session
+        from jwinventoryapi.manager import Session
         for session in self._sessions:
             if session.state == Session.State.OPEN:
                 session.update_slot(slot)

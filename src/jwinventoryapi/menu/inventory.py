@@ -2,7 +2,7 @@ from typing import overload, Callable
 
 from endstone.inventory import ItemStack
 
-from endstone_inventoryui.util.item_utils import clone_item
+from jwinventoryapi.util.item_utils import clone_item
 
 
 class UIInventory:

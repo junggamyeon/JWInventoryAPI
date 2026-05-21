@@ -3,7 +3,7 @@ from bedrock_protocol.packets.packet.packet_base import Packet
 from bedrock_protocol.packets.types import FullContainerName
 from bstream import BinaryStream, ReadOnlyBinaryStream
 
-from endstone_inventoryui.network.item_stack_wrapper import ItemStackWrapper
+from jwinventoryapi.network.item_stack_wrapper import ItemStackWrapper
 
 
 class InventorySlotPacket(Packet):

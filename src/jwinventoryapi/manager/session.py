@@ -5,17 +5,17 @@ from typing import TYPE_CHECKING
 from bedrock_protocol.packets.types import BlockPos
 from endstone import Player
 
-from endstone_inventoryui.menu.graphic.block_graphic import BlockGraphic
-from endstone_inventoryui.menu.graphic.block_pair_graphic import BlockPairGraphic
-from endstone_inventoryui.menu.graphic.graphic import Graphic
+from jwinventoryapi.menu.graphic.block_graphic import BlockGraphic
+from jwinventoryapi.menu.graphic.block_pair_graphic import BlockPairGraphic
+from jwinventoryapi.menu.graphic.graphic import Graphic
 
 if TYPE_CHECKING:
-    from endstone_inventoryui.menu import Menu
-from endstone_inventoryui.network.inventory_content_packet import InventoryContentPacket
-from endstone_inventoryui.network.inventory_slot_packet import InventorySlotPacket
-from endstone_inventoryui.network.item_stack_wrapper import ItemStackWrapper
-from endstone_inventoryui.util.item_utils import is_air
-from endstone_inventoryui.util.utils import send_ack_packet, get_block_behind
+    from jwinventoryapi.menu import Menu
+from jwinventoryapi.network.inventory_content_packet import InventoryContentPacket
+from jwinventoryapi.network.inventory_slot_packet import InventorySlotPacket
+from jwinventoryapi.network.item_stack_wrapper import ItemStackWrapper
+from jwinventoryapi.util.item_utils import is_air
+from jwinventoryapi.util.utils import send_ack_packet, get_block_behind
 
 
 class Session:
