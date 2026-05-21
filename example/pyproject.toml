@@ -13,3 +13,6 @@ description = "Example plugin for jwinventoryapi"
 
 [project.entry-points."endstone"]
 jwinventoryapi_example = "jwinventoryapi_example:Main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jwinventoryapi_example"]

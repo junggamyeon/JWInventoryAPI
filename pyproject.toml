@@ -21,3 +21,6 @@ Homepage = "https://github.com/Shock95/jwinventoryapi"
 
 [project.entry-points."endstone"]
 jwinventoryapi = "jwinventoryapi:JWInventoryAPI"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jwinventoryapi"]
