@@ -1,84 +1,84 @@
 # JWInventoryAPI v2.0.0
 
-Một plugin tạo giao diện Inventory (Chest, Hopper,...) cho Endstone. Phiên bản này (v2.0.0) mang đến API đơn giản, dễ hiểu và mạnh mẽ hơn!
+A read-only Inventory UI plugin for Endstone servers. This version (v2.0.0) brings a simpler, easier to understand, and more powerful API!
 
 ---
 
-## 🛠 Hướng Dẫn Sử Dụng (API)
+## 🛠 API Usage
 
-### 1. Các loại Menu (MenuType)
-Bạn có thể tạo các dạng UI với kích thước khác nhau:
-- `MenuType.CHEST` - Rương đơn (27 ô)
-- `MenuType.DOUBLE_CHEST` - Rương đôi (54 ô)
-- `MenuType.DISPENSER` - Máy phân phát (9 ô)
-- `MenuType.HOPPER` - Phễu (5 ô)
+### 1. Menu Types (MenuType)
+You can create UI menus with various container sizes:
+- `MenuType.CHEST` - Single chest (27 slots)
+- `MenuType.DOUBLE_CHEST` - Double chest (54 slots)
+- `MenuType.DISPENSER` - Dispenser (9 slots)
+- `MenuType.HOPPER` - Hopper (5 slots)
 
-### 2. Khởi tạo Menu
+### 2. Creating a Menu
 
 ```python
 from jwinventoryapi import Menu, MenuType
 
-# Tạo một menu Rương Đơn với tiêu đề "My Menu"
+# Create a Single Chest menu with the title "My Menu"
 my_menu = Menu(type=MenuType.CHEST, name="My Menu")
 ```
 
-### 3. Thêm Item và Gắn Sự Kiện Click (Cách Mới Rất Tiện Lợi)
+### 3. Adding Items and Click Listeners (New & Convenient Method)
 
-Thay vì phải kiểm tra từng `slot` người chơi click, giờ đây bạn có thể **gắn trực tiếp hành động (function) vào lúc bạn thêm Item!**
+Instead of checking each `slot` globally when a player clicks, you can now **attach actions (functions) directly when adding an Item!**
 
-**A. Đặt Item ở một ô (slot) cụ thể:**
+**A. Set an Item at a specific slot:**
 ```python
 from endstone.inventory import ItemStack
 
 def on_diamond_click(player, slot, item, inventory):
-    player.send_message("Bạn vừa bấm vào Kim Cương!")
+    player.send_message("You clicked the Diamond!")
     my_menu.close(player)
 
-# Đặt kim cương ở ô số 4 và gọi hàm trên khi click
+# Place a diamond in slot 4 and call the above function when clicked
 my_menu.set_item(4, ItemStack("minecraft:diamond"), on_click=on_diamond_click)
 ```
 
-**B. Gắn nhanh (dùng lambda):**
+**B. Quick attachment (using lambda):**
 ```python
 my_menu.set_item(
     0, 
     ItemStack("minecraft:apple"), 
-    on_click=lambda p, s, i, inv: p.send_message("Táo ngon!")
+    on_click=lambda p, s, i, inv: p.send_message("Yummy apple!")
 )
 ```
 
-**C. Tự động tìm ô trống để thêm:**
+**C. Automatically find the first empty slot to add:**
 ```python
-my_menu.add_item(ItemStack("minecraft:stone"), on_click=lambda p, s, i, inv: p.send_message("Cục đá!"))
+my_menu.add_item(ItemStack("minecraft:stone"), on_click=lambda p, s, i, inv: p.send_message("A stone!"))
 ```
 
-### 4. Hiển Thị và Đóng Menu
+### 4. Displaying and Closing the Menu
 
-- **Mở Menu:**
+- **Open Menu:**
 ```python
 my_menu.send_to(player)
 ```
 
-- **Đóng Menu:**
+- **Close Menu:**
 ```python
-my_menu.close(player)      # Đóng với 1 người chơi
-my_menu.close_all()        # Đóng với TẤT CẢ người chơi đang xem
+my_menu.close(player)      # Close for a specific player
+my_menu.close_all()        # Close for ALL players currently viewing
 ```
 
 ---
 
-## 🚀 Các Phương Thức (Methods) Khác Của `Menu`
+## 🚀 Other `Menu` Methods
 
-- `set_name(name: str)` - Đổi lại tên (tiêu đề) của menu.
-- `set_listener(listener)` - Lắng nghe SỰ KIỆN CHUNG khi click vào bất kỳ ô nào trong menu.
-- `set_place_listener(listener)` - Lắng nghe sự kiện khi người chơi click vào kho đồ CỦA HỌ (túi đồ ở dưới) khi menu đang mở.
-- `set_open_listener(listener)` - Hành động khi có người MỞ menu.
-- `set_close_listener(listener)` - Hành động khi có người ĐÓNG menu.
-- `get_viewers()` - Trả về danh sách (`list[Player]`) những người đang xem menu này.
+- `set_name(name: str)` - Change the title of the menu.
+- `set_listener(listener)` - Listen to GLOBAL click events on any slot in the menu.
+- `set_place_listener(listener)` - Listen to events when a player clicks their OWN inventory (bottom section) while the menu is open.
+- `set_open_listener(listener)` - Action to perform when a player OPENS the menu.
+- `set_close_listener(listener)` - Action to perform when a player CLOSES the menu.
+- `get_viewers()` - Returns a list (`list[Player]`) of players currently viewing this menu.
 
 ---
 
-## 📌 Ví dụ Đầy Đủ
+## 📌 Full Example
 
 ```python
 from endstone import Player
@@ -88,10 +88,10 @@ from jwinventoryapi import Menu, MenuType
 
 class MyPlugin(Plugin):
     def on_enable(self):
-        # 1. Tạo Menu
-        self.menu = Menu(MenuType.CHEST, "§l§bShop Vũ Khí")
+        # 1. Create Menu
+        self.menu = Menu(MenuType.CHEST, "§l§bWeapon Shop")
         
-        # 2. Thêm đồ và hành động
+        # 2. Add items and actions
         self.menu.set_item(
             4, 
             ItemStack("minecraft:diamond_sword"), 
@@ -105,7 +105,7 @@ class MyPlugin(Plugin):
         )
 
     def buy_sword(self, player: Player, slot: int, item: ItemStack, inventory):
-        player.send_message("Đã mua Kiếm Kim Cương thành công!")
-        # Bạn có thể code logic trừ tiền ở đây
+        player.send_message("Successfully purchased a Diamond Sword!")
+        # You can add logic to deduct money here
         self.menu.close(player)
 ```
