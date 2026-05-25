@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "endstone-jwinventoryapi-example"
+version = "2.0.0"
+dependencies = ["endstone-jwinventoryapi"]
+authors = [
+    { name = "Shock95", email = "" },
+]
+description = "Example plugin for jwinventoryapi"
+
+[project.entry-points."endstone"]
+jwinventoryapi_example = "jwinventoryapi_example:Main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jwinventoryapi_example"]

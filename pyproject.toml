@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "endstone-jwinventoryapi"
+version = "3.0.0"
+dependencies = [
+    "bedrock-protocol-packets-ng==0.0.8"
+]
+authors = [
+    { name = "Shock95", email = "" },
+]
+description = "JWInventoryAPI for Endstone servers"
+readme = "README.md"
+license = { file = "LICENSE" }
+keywords = ["endstone", "plugin", "jwinventoryapi"]
+
+[project.urls]
+Homepage = "https://github.com/Shock95/jwinventoryapi"
+
+[project.entry-points."endstone"]
+jwinventoryapi = "jwinventoryapi:JWInventoryAPI"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jwinventoryapi"]

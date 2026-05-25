@@ -1,0 +1,38 @@
+from bedrock_protocol.packets.packet import BlockActorDataPacket, ContainerOpenPacket
+from bedrock_protocol.packets.types import BlockPos
+from endstone import Player
+from rapidnbt import CompoundTag
+
+from jwinventoryapi.menu import Menu
+from jwinventoryapi.menu.graphic.graphic import Graphic
+from jwinventoryapi.util.utils import send_block
+
+
+class BlockGraphic(Graphic):
+    menu: Menu
+    pos: BlockPos
+
+    def __init__(self, menu: Menu, pos: BlockPos):
+        self.menu = menu
+        self.pos = pos
+
+    def send(self, player: Player):
+        send_block(player, self.menu.type.block_id, self.pos)
+
+    def send_data(self, player: Player):
+        tag = CompoundTag()
+        pos = self.pos
+        tag.set("id", self.menu.type.block_actor_id)
+        tag.set("CustomName", self.menu.name)
+        pk = BlockActorDataPacket(BlockPos(pos.x, pos.y, pos.z), tag)
+        player.send_packet(pk.get_packet_id(), pk.serialize())
+
+    def open(self, player: Player):
+        from jwinventoryapi.manager import Session
+        pos = BlockPos(self.pos.x, self.pos.y, self.pos.z)
+        pk = ContainerOpenPacket(Session.CONTAINER_ID, self.menu.type.container_type, pos)
+        player.send_packet(pk.get_packet_id(), pk.serialize())
+
+    def remove(self, player: Player):
+        block = player.dimension.get_block_at(self.pos.x, self.pos.y, self.pos.z)
+        send_block(player, block.type, self.pos)
