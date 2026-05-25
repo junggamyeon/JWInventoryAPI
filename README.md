@@ -180,16 +180,3 @@ class MyPlugin(Plugin):
             self.shop_menu.send_to(sender)
         return True
 ```
-
-## Installation
-
-Place the wheel in your server's `plugins/` directory:
-
-```
-endstone_jwinventoryapi-2.0.0-py2.py3-none-any.whl
-```
-
-## Dependencies
-
-- endstone
-- bedrock-protocol-packets-ng
